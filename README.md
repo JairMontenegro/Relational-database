@@ -91,7 +91,7 @@ ALTER TABLE table_name DROP COLUMN column_name;
 To rename a column in a table, you can use the following command:
 
 ```sql
-ALTER TABLE table_name RENAME COLUMN old_column_name TO new_column_name;
+ALTER TABLE table_name RENAME COLUMN column_name_old TO new_name;
 ```
 
 ## 12. Insert data into a table
@@ -112,21 +112,15 @@ To query data from a table, use the `SELECT` statement:
 SELECT columns FROM table_name;
 ```
 
-Use an asterisk `*` to get all columns:
+To select multiple columns, use:
 
 ```sql
-SELECT * FROM table_name;
+SELECT id, name FROM characters;
 ```
 
 ## 14. Delete a row
 
 To delete a row from a table, you can use the following command with a condition:
-
-```sql
-DELETE FROM table_name WHERE condition;
-```
-
-Example:
 
 ```sql
 DELETE FROM table_name WHERE username='Luigi';
@@ -150,7 +144,7 @@ ALTER DATABASE database_name RENAME TO new_database_name;
 
 ## 17. Use of SERIAL type
 
-The `SERIAL` type turns your column into an `INT` with a `NOT NULL` constraint, and it automatically increments when a new row is added. You can add a constraint like `NOT NULL` next to the data type.
+The `SERIAL` type turns your column into an `INT` with a `NOT NULL` constraint, and it automatically increments when a new row is added.
 
 ## 18. Insert multiple rows
 
@@ -196,11 +190,7 @@ To drop a constraint from a table, use the following command:
 ALTER TABLE table_name DROP CONSTRAINT constraint_name;
 ```
 
-## 23. DATE data type
-
-`DATE` is a data type that stores date values.
-
-## 24. NUMERIC data type
+## 23. NUMERIC data type
 
 In PostgreSQL, `NUMERIC(4, 1)` is used to store numbers with specified precision and scale.
 
@@ -215,7 +205,7 @@ Examples of valid values:
 
 It cannot store values like `1000.0`, as it exceeds the 4 digits allowed.
 
-## 25. Foreign key
+## 24. Foreign key
 
 To create a foreign key to relate two tables, you can use the following command:
 
@@ -225,4 +215,101 @@ ADD COLUMN column_name DATATYPE
 REFERENCES referenced_table_name(referenced_column_name);
 ```
 
-This creates a column that references another table's column, allowing you to connect related rows.
+Example:
+
+```sql
+ALTER TABLE sounds ADD COLUMN character_id INT NOT NULL REFERENCES characters(character_id);
+```
+
+## 25. One-to-one relationship with UNIQUE constraint
+
+You can enforce a one-to-one relationship using a `UNIQUE` constraint:
+
+```sql
+ALTER TABLE table_name ADD UNIQUE(column_name);
+```
+
+## 26. NOT NULL constraint
+
+To ensure a column cannot have `NULL` values, use the following command:
+
+```sql
+ALTER TABLE table_name ALTER COLUMN column_name SET NOT NULL;
+```
+
+## 27. Select multiple columns
+
+To select multiple columns, separate the column names with a comma:
+
+```sql
+SELECT character_id, name FROM characters;
+```
+
+## 28. Insert a row with specific data
+
+Example of inserting a row with values:
+
+```sql
+INSERT INTO more_info(birthday, height, weight, character_id)
+VALUES('1981-07-09', 155, 64.5, 1);
+```
+
+## 29. Query with condition
+
+To query rows with a specific condition:
+
+```sql
+SELECT columns FROM table_name WHERE condition;
+```
+
+## 30. Order table by a column
+
+To order a table by a specific column:
+
+```sql
+SELECT columns FROM table_name ORDER BY column;
+```
+
+## 31. Create a table with a primary key
+
+Example of creating a table with a `SERIAL` primary key:
+
+```sql
+CREATE TABLE sounds(sound_id SERIAL PRIMARY KEY);
+```
+
+## 32. Many-to-many relationship with junction table
+
+For a many-to-many relationship, create a junction table:
+
+```sql
+CREATE TABLE character_actions (
+  character_id INT,
+  action_id INT,
+  PRIMARY KEY (character_id, action_id)
+);
+```
+
+## 33. Add a foreign key to an existing column
+
+To add a foreign key to an existing column:
+
+```sql
+ALTER TABLE character_actions ADD FOREIGN KEY (character_id) REFERENCES characters(character_id);
+```
+
+## 34. Composite primary key
+
+To create a primary key using two columns (composite key):
+
+```sql
+ALTER TABLE table_name ADD PRIMARY KEY(column1, column2);
+```
+
+## 35. FULL JOIN command
+
+To retrieve data from two tables using a `FULL JOIN`:
+
+```sql
+SELECT * FROM characters FULL JOIN sounds ON characters.character_id = sounds.character_id;
+```
