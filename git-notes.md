@@ -56,7 +56,7 @@ To bring back the changes from your stash, use:
 git stash pop
 ```
 
-## 10. View changes in the latest stash
+## 10. View a condensed version of the changes in the latest stash
 To see a condensed version of the changes in the latest stash:
 ```bash
 git stash show
@@ -107,3 +107,27 @@ git reset --hard HEAD~1
 git reset --soft HEAD~1
 ```
 The `--hard` flag will discard the changes, while the `--soft` flag will keep them staged.
+
+## 16. Revert a commit
+To revert the most recent commit (HEAD), use:
+```bash
+git revert HEAD
+```
+This is a good way to undo a commit without losing it from history.
+
+## 17. Interactive rebase
+To enter "interactive" mode to manipulate commits, use:
+```bash
+git rebase --interactive HEAD~2
+```
+The `HEAD~2` means you'll be able to modify the last two commits.
+
+## 18. Drop commits during rebase
+When in interactive mode, you will see the commits listed with `pick` next to them. To drop a commit, replace `pick` with `d` for both commits, save, and exit the editor.
+
+## 19. Rebase back to the root
+To go back to the very first commit (root) and change a commit message, you can use:
+```bash
+git rebase --interactive --root
+```
+This command will allow you to manipulate the first commit and beyond.
